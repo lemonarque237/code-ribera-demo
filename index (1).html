@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le Code Ribera, maquette</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --encre:#16222B; --corps:#3A4752; --gris:#6C7883; --pale:#9AA5AE;
+  --filet:#E2E7EA; --papier:#FBFBF9; --panneau:#F3F6F7;
+  --acier:#2D6E8E; --fonce:#1D4A61; --clair:#E7F0F4;
+  --jaune:#F5E6B8; --jaune-b:#D9BC55;
+  --ui:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --loi:'Source Serif 4',Georgia,serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --encre:#EEF2F4; --corps:#C3CCD3; --gris:#8F9BA4; --pale:#6E7A83;
+  --filet:#2A343C; --papier:#12191E; --panneau:#19222A;
+  --acier:#6FAFC9; --fonce:#9CCADE; --clair:#1B2C36;
+  --jaune:#4A3F1E; --jaune-b:#8A7530;
+}}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papier);color:var(--corps);font-family:var(--ui);
+  font-weight:300;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+@media(max-width:600px){.wrap{padding:0 16px}}
+
+.avis{background:var(--encre);color:var(--papier);font-size:12px;padding:9px 0}
+.avis .wrap{display:flex;gap:10px;flex-wrap:wrap}
+.avis b{font-weight:500}.avis span{color:var(--pale)}
+
+header{border-bottom:1px solid var(--filet);padding:24px 0 0}
+.titre{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+h1{font-weight:300;font-size:29px;line-height:1.1;color:var(--encre);margin:0}
+.dossier{font-size:12.5px;color:var(--gris);text-align:right}
+.dossier b{display:block;font-weight:500;color:var(--encre);font-size:14px}
+nav{display:flex;gap:2px;margin-top:20px;flex-wrap:wrap}
+nav button{appearance:none;background:none;border:0;border-bottom:2px solid transparent;
+  font-family:var(--ui);font-size:14px;color:var(--gris);padding:10px 15px 11px;cursor:pointer}
+nav button:hover{color:var(--encre)}
+nav button[aria-selected="true"]{color:var(--fonce);border-bottom-color:var(--acier);font-weight:500}
+nav button:focus-visible{outline:2px solid var(--acier);outline-offset:2px}
+
+main{padding:30px 0 70px}
+.amorce{font-size:15.5px;color:var(--corps);max-width:58ch;margin:0 0 20px}
+.amorce b{font-weight:500;color:var(--encre)}
+
+/* zone de lecture */
+.exemples{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.exemples button{appearance:none;font-family:var(--ui);font-size:12.5px;background:none;
+  border:1px solid var(--filet);color:var(--gris);padding:6px 12px;border-radius:2px;cursor:pointer}
+.exemples button:hover{border-color:var(--acier);color:var(--fonce)}
+.exemples button:focus-visible{outline:2px solid var(--acier);outline-offset:2px}
+
+.boite{border:1px solid var(--filet);border-radius:2px;background:var(--panneau)}
+.boite .haut{font-size:11.5px;color:var(--pale);font-weight:500;padding:10px 16px 0}
+textarea{width:100%;border:0;background:none;resize:vertical;min-height:132px;
+  font-family:var(--loi);font-size:15.5px;line-height:1.62;color:var(--corps);
+  padding:8px 16px 14px;outline:none}
+textarea:focus-visible{outline:2px solid var(--acier);outline-offset:-2px}
+.scan{padding:8px 16px 14px;font-family:var(--loi);font-size:15.5px;line-height:1.62;min-height:132px}
+mark{background:none;color:inherit;padding:1px 0;border-radius:2px;transition:background .3s ease,box-shadow .3s ease}
+mark.on{background:var(--jaune);box-shadow:0 0 0 3px var(--jaune)}
+@media (prefers-reduced-motion:reduce){mark{transition:none}}
+
+.barre{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:14px}
+.go{appearance:none;font-family:var(--ui);font-size:14.5px;font-weight:400;background:var(--acier);
+  border:1px solid var(--acier);color:#fff;padding:11px 22px;border-radius:2px;cursor:pointer}
+.go:hover{background:var(--fonce);border-color:var(--fonce)}
+.go:disabled{opacity:.5;cursor:default}
+.go:focus-visible{outline:2px solid var(--fonce);outline-offset:2px}
+.etat{font-size:13px;color:var(--gris);min-height:20px}
+.etat b{font-weight:500;color:var(--fonce)}
+
+/* signaux */
+.signaux{margin-top:22px}
+.signaux h2,.sortie h2{font-weight:400;font-size:16px;color:var(--encre);margin:0 0 10px}
+.puce{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;margin-bottom:7px;
+  opacity:0;transform:translateY(3px)}
+.puce.vu{opacity:1;transform:none;transition:opacity .25s ease,transform .25s ease}
+@media (prefers-reduced-motion:reduce){.puce{opacity:1;transform:none}}
+.pastille{flex:0 0 auto;width:9px;height:9px;border-radius:50%;background:var(--jaune-b);margin-top:6px}
+
+/* lectures */
+.sortie{margin-top:26px}
+.lectures{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:720px){.lectures{grid-template-columns:1fr}}
+.lecture{border-top:2px solid var(--acier);padding-top:14px}
+.lecture:nth-child(2){border-top-color:var(--pale)}
+.lecture .rang{font-size:11.5px;font-weight:500;color:var(--gris)}
+.lecture h3{font-family:var(--loi);font-weight:600;font-size:17px;line-height:1.35;
+  color:var(--encre);margin:6px 0 9px}
+.lecture p{font-size:13.8px;margin:0 0 10px;max-width:50ch}
+.lienloi{appearance:none;background:var(--clair);border:0;border-left:2px solid var(--acier);
+  font-family:var(--ui);font-size:12.5px;color:var(--fonce);text-align:left;
+  padding:8px 11px;margin-bottom:10px;cursor:pointer;display:block;width:100%;line-height:1.45}
+.lienloi:hover{background:var(--acier);color:#fff}
+.lienloi b{font-weight:500}
+.lienloi em{font-style:normal;display:block;font-size:11.5px;opacity:.8;margin-top:3px}
+.lienloi:focus-visible{outline:2px solid var(--acier);outline-offset:2px}
+.sep{border:0;border-top:1px solid var(--filet);margin:16px 0}
+.paire{font-size:13.5px;margin:0 0 6px;max-width:74ch}
+.paire b{font-weight:500;color:var(--encre)}
+.vide{border:1px dashed var(--acier);border-radius:2px;padding:18px 20px;background:var(--clair);max-width:70ch}
+.vide h3{font-weight:500;font-size:15px;color:var(--fonce);margin:0 0 8px}
+.vide p{font-size:14px;margin:0 0 9px}.vide p:last-child{margin:0}
+
+/* doctrine */
+.doctrine{display:grid;grid-template-columns:230px 1fr;gap:32px;align-items:start}
+@media(max-width:760px){.doctrine{grid-template-columns:1fr;gap:20px}}
+.index{border-top:1px solid var(--filet)}
+.index button{display:block;width:100%;text-align:left;appearance:none;background:none;border:0;
+  border-bottom:1px solid var(--filet);padding:12px 4px;cursor:pointer;font-family:var(--ui);color:var(--corps)}
+.index button:hover{background:var(--panneau)}
+.index button:focus-visible{outline:2px solid var(--acier);outline-offset:-2px}
+.index .ref{font-size:11.5px;color:var(--pale);font-weight:500}
+.index .tt{font-size:13px;line-height:1.4;margin-top:3px}
+.index button[aria-current="true"]{background:var(--clair)}
+.index button[aria-current="true"] .ref{color:var(--fonce)}
+.article{border-top:2px solid var(--acier);padding-top:18px}
+.article .ref{font-size:12px;font-weight:500;color:var(--fonce)}
+.enonce{font-family:var(--loi);font-size:22px;line-height:1.42;color:var(--encre);margin:9px 0 6px;max-width:34ch}
+@media(max-width:600px){.enonce{font-size:19px}}
+.badges{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px}
+.badge{font-size:11.5px;font-weight:500;padding:3px 9px;border-radius:2px;border:1px solid var(--filet);color:var(--gris)}
+.badge.cand{border-color:var(--acier);color:var(--fonce);background:var(--clair)}
+.badge.epr{border-color:var(--fonce);background:var(--fonce);color:#fff}
+@media (prefers-color-scheme:dark){.badge.epr{color:#10181D}}
+dl{margin:0;display:grid;grid-template-columns:146px 1fr}
+@media(max-width:600px){dl{grid-template-columns:1fr}}
+dt{font-size:12.5px;font-weight:500;color:var(--encre);padding:12px 16px 12px 0;border-top:1px solid var(--filet)}
+dd{margin:0;padding:12px 0;border-top:1px solid var(--filet);font-size:14px;max-width:66ch}
+@media(max-width:600px){dt{padding-bottom:0}dd{border-top:0;padding-top:4px}}
+dd.serif{font-family:var(--loi);font-size:15px;line-height:1.55}
+dd ul{margin:0;padding-left:17px}dd li{margin-bottom:4px}
+.mien{margin-top:22px;font-size:12.5px;color:var(--gris);border-left:2px solid var(--acier);
+  padding:4px 0 4px 13px;max-width:58ch}
+
+/* trancher */
+.propose{border-top:2px solid var(--acier);padding-top:16px;max-width:74ch}
+.propose .rang{font-size:11.5px;font-weight:500;color:var(--fonce)}
+.propose .enonce{font-size:20px;margin:8px 0 12px}
+.venu{font-size:13px;color:var(--gris);margin:0 0 18px}
+.verdicts{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+@media(max-width:760px){.verdicts{grid-template-columns:1fr 1fr}}
+@media(max-width:420px){.verdicts{grid-template-columns:1fr}}
+.verdicts button{appearance:none;font-family:var(--ui);font-size:13.5px;text-align:left;background:none;
+  border:1px solid var(--filet);color:var(--corps);padding:11px 12px;border-radius:2px;cursor:pointer;line-height:1.35}
+.verdicts button small{display:block;font-size:11.5px;color:var(--pale);margin-top:3px}
+.verdicts button:hover{border-color:var(--acier)}
+.verdicts button:focus-visible{outline:2px solid var(--acier);outline-offset:2px}
+.verdicts button[aria-pressed="true"]{background:var(--acier);border-color:var(--acier);color:#fff}
+.verdicts button[aria-pressed="true"] small{color:rgba(255,255,255,.75)}
+.verdicts button.grave{border-color:var(--fonce)}
+.resultat{margin-top:16px;border-left:2px solid var(--acier);padding:2px 0 2px 14px;
+  font-size:14px;max-width:64ch;min-height:44px}
+.resultat b{font-weight:500;color:var(--encre)}
+
+footer{border-top:1px solid var(--filet);padding:18px 0 40px;font-size:12.5px;color:var(--pale)}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+[hidden]{display:none !important}
+</style>
+</head>
+<body>
+
+<div class="avis"><div class="wrap">
+  <b>Maquette de démonstration</b>
+  <span>Dossier fictif, lois inventées pour l'exemple. Aucun contenu réel, rien n'est enregistré.</span>
+</div></div>
+
+<header><div class="wrap">
+  <div class="titre">
+    <h1>Le Code Ribera</h1>
+    <div class="dossier">Dossier ouvert<b>Groupe Vallier</b>Aide à domicile, 4 entités rachetées</div>
+  </div>
+  <nav role="tablist">
+    <button role="tab" aria-selected="true" data-onglet="lire">Lire un dossier</button>
+    <button role="tab" aria-selected="false" data-onglet="doctrine">La doctrine</button>
+    <button role="tab" aria-selected="false" data-onglet="trancher">Trancher</button>
+  </nav>
+</div></header>
+
+<main><div class="wrap">
+
+<!-- lire -->
+<section id="lire">
+  <p class="amorce">Colle ce qu'on t'a dit, en langage ordinaire. <b>Ou écris ta propre phrase.</b></p>
+
+  <div class="exemples" id="exemples"></div>
+
+  <div class="boite">
+    <div class="haut" id="haut">Entretien du 11 mars, directeur régional</div>
+    <textarea id="texte" spellcheck="false" aria-label="Matière du dossier"></textarea>
+    <div class="scan" id="scan" hidden></div>
+  </div>
+
+  <div class="barre">
+    <button class="go" id="go">Lire ce dossier</button>
+    <span class="etat" id="etat"></span>
+  </div>
+
+  <div class="signaux" id="signaux" hidden>
+    <h2>Ce que le Code a relevé</h2>
+    <div id="listeSignaux"></div>
+  </div>
+
+  <div class="sortie" id="sortie" hidden></div>
+</section>
+
+<!-- doctrine -->
+<section id="doctrine" hidden>
+  <p class="amorce">Tes lois. Vraies de n'importe quelle entreprise, sans nom de client, et <b>chacune exclut quelque chose.</b></p>
+  <div class="doctrine">
+    <div class="index" id="index"></div>
+    <div id="article"></div>
+  </div>
+</section>
+
+<!-- trancher -->
+<section id="trancher" hidden>
+  <p class="amorce">En fin de séance, ce qui a été compris arrive <b>déjà formulé</b>. Tu corriges, tu tranches. Essaie les quatre réponses.</p>
+  <div class="propose">
+    <div class="rang">Proposition issue de la séance du 14 mars</div>
+    <p class="enonce">Un signe apposé avant l'existence de ce qu'il désigne durcit l'écart au lieu de le réduire.</p>
+    <p class="venu">Venu de : la charte et les adresses mail du groupe, déployées avant que le groupe existe pour quiconque.</p>
+    <div class="verdicts" id="verdicts"></div>
+    <div class="resultat" id="resultat">Choisis une réponse.</div>
+  </div>
+</section>
+
+</div></main>
+
+<footer><div class="wrap">
+  <span>Le Code Ribera, maquette</span><span>ACR Conseil</span>
+</div></footer>
+
+<script>
+/* donnees */
+const LOIS=[
+{ref:"Loi 1",statut:"éprouvée",
+ enonce:"Une entité rachetée conserve sa référence antérieure aussi longtemps qu'il n'existe rien dans quoi entrer.",
+ mecanisme:"L'écart n'est pas une résistance, c'est une absence d'objet. On ne rejoint pas ce qui n'existe pas encore pour soi.",
+ signaux:["Les gens nomment leur enseigne d'origine, jamais le groupe.","Aucune relation de travail entre les entités.","Le fait est dit spontanément, par tout le monde."],
+ procede:"Produire d'abord l'existence du groupe comme expérience vécue. Énoncer ensuite ce qui est attendu. N'apposer les signes qu'en dernier.",
+ concurrentes:"Se confond avec une résistance au changement. Ce qui les sépare : ici, il n'y a rien à quoi résister.",
+ origine:"Groupe de services par rachats (2024), éprouvée sur deux dossiers depuis.",
+ solidite:"Éprouvée : trois dossiers, dont un qui a précisé sa limite.",
+ statutTexte:"Version 3, 14 mars. Reste à trancher : le seuil à partir duquel le groupe existe pour quelqu'un."},
+{ref:"Loi 2",statut:"éprouvée",
+ enonce:"Un collectif qui se sent nié n'entend rien de ce qui suit.",
+ mecanisme:"Tant que ce qu'ils vivent n'a pas été nommé par quelqu'un qui compte, l'attention reste occupée à le défendre.",
+ signaux:["Une difficulté est racontée avant qu'on ait posé une question.","Les mêmes faits reviennent chez des gens qui ne se parlent pas.","Une décision passée est citée comme preuve qu'on n'écoute pas."],
+ procede:"Faire reconnaître la chose publiquement, par la personne la plus haute présente, et avant toute annonce.",
+ concurrentes:"Se confond avec un désaccord sur le fond. Un désaccord se discute ; une négation bloque.",
+ origine:"Réseau d'agences (2023), confirmée sur trois dossiers.",
+ solidite:"Éprouvée : quatre dossiers, jamais démentie.",
+ statutTexte:"Version 2, 6 février. Stable."},
+{ref:"Loi 3",statut:"éprouvée",
+ enonce:"Une valeur que rien ne reconnaît dans le quotidien ne devient jamais un comportement.",
+ mecanisme:"Une manière d'agir qu'aucun regard ne relève finit par coûter à celui qui la tient. Elle ne survit qu'aux gens qui l'avaient déjà.",
+ signaux:["La valeur est citée de mémoire, mais personne ne cite quelqu'un qui l'aurait tenue.","Aucun critère d'évaluation n'en parle.","Ceux qui l'appliquent disent le faire à leur manière."],
+ procede:"Installer un dispositif qui la rend visible avant de la réaffirmer. Un seul suffit, s'il est tenu.",
+ concurrentes:"Se confond avec une valeur mal énoncée. Ici elle est parfaitement comprise, elle n'est jamais relevée.",
+ origine:"Entreprise de propreté (2024).",
+ solidite:"Éprouvée : deux dossiers.",
+ statutTexte:"Version 1, 22 janvier."},
+{ref:"Loi 4",statut:"candidate",
+ enonce:"Ce qu'une hiérarchie ne peut pas observer, elle ne peut pas le prescrire.",
+ mecanisme:"Une prescription suppose un constat possible. Sans constat, elle devient une intention, et une intention ne se délègue pas.",
+ signaux:["Le travail se fait hors de toute présence.","Les outils de suivi ne relèvent que des heures et des passages.","L'encadrement dit « on leur fait confiance » sur le point qui compte."],
+ procede:"Cesser de prescrire. Passer par ce qui se transmet entre pairs, et par ce que le collectif reconnaît de lui-même.",
+ concurrentes:"Se confond avec un défaut de contrôle. Renforcer le contrôle ne change rien : le geste reste invisible.",
+ origine:"Groupe Vallier (2026).",
+ solidite:"Candidate : un seul dossier. Devient éprouvée quand un second la confirme.",
+ statutTexte:"Version 1, 14 mars. Formulation à durcir."}
+];
+
+/* signaux détectables : mots -> loi */
+const SIGNAUX=[
+ {loi:0,label:"Chacun nomme son enseigne d'origine, pas le groupe",mots:["chez ménard","chez belloc","leur ancienne","ancienne société","leur enseigne","leur boîte","jamais chez nous","pas chez nous"]},
+ {loi:0,label:"Aucune relation entre les entités",mots:["se connaissent pas","aucun lien","chacun dans son coin","jamais travaillé ensemble","aucune relation","entre les agences"]},
+ {loi:1,label:"Une décision passée citée comme preuve qu'on n'écoute pas",mots:["mal pris","ça a bloqué","très mal","on nous avait dit","on n'écoute pas","on n'a pas été prévenus","sans nous demander"]},
+ {loi:1,label:"Une difficulté racontée sans qu'on la demande",mots:["spontanément","sans qu'on demande","tout le monde en parle","revient tout le temps"]},
+ {loi:2,label:"La valeur est connue mais personne n'est cité pour l'avoir tenue",mots:["on le dit","c'est dans nos valeurs","affiché","tout le monde sait","personne ne le relève","jamais valorisé"]},
+ {loi:3,label:"Le travail se fait hors de toute présence",mots:["seule au domicile","personne ne la voit","personne ne sait","on leur fait confiance","hors de notre vue","pas de témoin"]},
+ {loi:3,label:"Le suivi ne relève que des bornes",mots:["heure d'arrivée","heure de départ","pointage","badge","logiciel de planning","la fiche"]},
+ {loi:2,label:"La transmission se fait entre pairs",mots:["les anciennes forment","forment les nouvelles","selon qui forme","tutorat","binôme"]}
+];
+
+const EXEMPLES=[
+ {b:"Entretien, directeur régional",h:"Entretien du 11 mars, directeur régional",
+  t:"On a racheté trois sociétés en quatre ans. Les équipes disent toujours chez Ménard ou chez Belloc, jamais chez nous. Les agences ne se connaissent pas, elles n'ont jamais travaillé ensemble. Quand on a sorti la charte avec le nouveau logo, personne n'en a parlé. Par contre, changer les adresses mail, ça a bloqué. Les anciens de Ménard l'ont très mal pris, on ne les avait pas prévenus."},
+ {b:"Note interne, direction",h:"Note de la direction, mars",
+  t:"Les intervenantes les plus anciennes forment les nouvelles pendant deux semaines. Selon qui forme, les nouvelles n'attrapent pas du tout les mêmes réflexes. Certaines équipes tiennent un niveau qu'on n'a jamais demandé, d'autres font le strict nécessaire. Même métier, mêmes consignes."},
+ {b:"Compte rendu, responsable de secteur",h:"Compte rendu du 3 mars, responsable de secteur",
+  t:"L'intervenante est seule au domicile, personne ne la voit. Le logiciel enregistre l'heure d'arrivée et l'heure de départ, rien d'autre. On leur fait confiance sur le reste. C'est écrit dans nos valeurs, c'est affiché partout, mais personne ne le relève jamais quand quelqu'un le fait vraiment."}
+];
+
+const LECTURES={
+ 0:{titre:"Il n'y a pas encore de groupe où entrer",
+    para:"Ce n'est pas un refus. Ils gardent leur référence d'origine parce qu'aucune autre n'existe pour eux. La charte est passée inaperçue pour la même raison.",
+    conduite:"Produire d'abord l'existence du groupe comme expérience vécue. Reporter les signes."},
+ 1:{titre:"Un collectif qui s'est senti nié",
+    para:"La réaction sur les adresses mail ne porte pas sur l'outil, mais sur ce qui a été retiré sans être nommé. Si c'est le cas, rien de ce qui sera dit ensuite ne sera entendu.",
+    conduite:"Faire reconnaître publiquement ce qui a été retiré, avant toute annonce."},
+ 2:{titre:"Une valeur que rien ne reconnaît",
+    para:"Elle est parfaitement comprise et jamais relevée. Ceux qui la tiennent le font à leurs frais, donc seuls ceux qui l'avaient déjà continuent.",
+    conduite:"Installer un dispositif qui la rend visible avant de la réaffirmer."},
+ 3:{titre:"On prescrit ce qu'on ne peut pas observer",
+    para:"Le geste attendu se produit hors de toute présence. Aucune procédure ne l'atteint, et renforcer le suivi ne changerait rien.",
+    conduite:"Passer par ce qui se transmet entre pairs, pas par la consigne."}
+};
+
+const PAIRES={
+ "0-1":{r:"Les deux prédisent qu'une annonce faite maintenant tombera à plat.",
+        e:"La première dit de construire avant de parler. La seconde dit de parler d'abord, mais d'autre chose. Pour trancher : les anciens de Ménard avaient-ils une relation à ce qu'on leur a retiré, ou seulement l'habitude ?"},
+ "2-3":{r:"Les deux portent sur un geste que rien ne vient soutenir.",
+        e:"La première dit que le geste n'est pas reconnu. La seconde dit qu'il n'est pas observable. Pour trancher : si on pouvait le voir, saurait-on le nommer ?"},
+ "3-2":{r:"Les deux portent sur un geste que rien ne vient soutenir.",
+        e:"La première dit qu'il n'est pas observable. La seconde dit qu'il n'est pas reconnu. Pour trancher : si on pouvait le voir, saurait-on le nommer ?"}
+};
+
+const VERDICTS=[
+ {t:"Déjà couvert",s:"La loi 1 le dit",cls:"",
+  r:"<b>Rien n'entre dans la doctrine.</b> Le cas reste attaché au dossier Vallier comme illustration de la loi 1, dont la solidité passe de trois à quatre dossiers."},
+ {t:"Précision",s:"Ça affine une loi",cls:"",
+  r:"<b>La loi 1 passe en version 4.</b> On te proposera la formulation modifiée, l'ancienne conservée à côté, et la raison du changement. Tu valides ou tu reformules."},
+ {t:"Loi nouvelle",s:"C'est autre chose",cls:"",
+  r:"<b>Une entrée est créée, marquée candidate.</b> Elle le reste jusqu'à ce qu'un second dossier la confirme."},
+ {t:"Contradiction",s:"Le cas fait ce qu'une loi excluait",cls:"grave",
+  r:"<b>La loi 1 est marquée contredite.</b> Elle cesse d'être proposée en lecture et te remonte en priorité, avec les trois dossiers qui l'avaient établie. C'est là que ta théorie progresse."}
+];
+
+/* lecture */
+const txt=document.getElementById('texte'),haut=document.getElementById('haut'),
+ scan=document.getElementById('scan'),go=document.getElementById('go'),etat=document.getElementById('etat'),
+ zSig=document.getElementById('signaux'),lSig=document.getElementById('listeSignaux'),sortie=document.getElementById('sortie'),
+ exemples=document.getElementById('exemples');
+
+EXEMPLES.forEach((e,i)=>{const b=document.createElement('button');b.textContent=e.b;
+ b.onclick=()=>{txt.value=e.t;haut.textContent=e.h;raz();};exemples.appendChild(b);});
+txt.value=EXEMPLES[0].t;
+txt.addEventListener('input',raz);
+
+function raz(){scan.hidden=true;txt.hidden=false;zSig.hidden=true;sortie.hidden=true;
+ etat.textContent='';go.disabled=false;go.textContent='Lire ce dossier';}
+
+function trouver(t){
+ const bas=t.toLowerCase().replace(/[’']/g,"'");
+ const vus=[];
+ SIGNAUX.forEach(s=>{
+   for(const m of s.mots){
+     const j=bas.indexOf(m);
+     if(j>=0){vus.push({...s,i:j,len:m.length});break;}
+   }
+ });
+ return vus.sort((a,b)=>a.i-b.i);
+}
+
+function surligner(t,vus){
+ let out='',pos=0;
+ vus.slice().sort((a,b)=>a.i-b.i).forEach((v,k)=>{
+   if(v.i<pos)return;
+   out+=esc(t.slice(pos,v.i))+'<mark data-k="'+k+'">'+esc(t.substr(v.i,v.len))+'</mark>';
+   pos=v.i+v.len;
+ });
+ return out+esc(t.slice(pos));
+}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+
+const reduit=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+go.onclick=()=>{
+ const t=txt.value.trim();
+ if(!t){etat.textContent='Colle un extrait, ou choisis un exemple.';return;}
+ const vus=trouver(t);
+ go.disabled=true;go.textContent='Lecture en cours';
+ txt.hidden=true;scan.hidden=false;
+ scan.innerHTML=surligner(t,vus);
+ etat.innerHTML='Recherche des signaux dans le texte.';
+ const marks=[...scan.querySelectorAll('mark')];
+ zSig.hidden=false;lSig.innerHTML='';
+ const pas=reduit?0:420;
+
+ vus.forEach((v,k)=>{
+   setTimeout(()=>{
+     if(marks[k])marks[k].classList.add('on');
+     const d=document.createElement('div');d.className='puce';
+     d.innerHTML='<span class="pastille"></span><span>'+v.label+'</span>';
+     lSig.appendChild(d);requestAnimationFrame(()=>d.classList.add('vu'));
+   },pas*(k+1));
+ });
+
+ setTimeout(()=>{
+   if(!vus.length){
+     zSig.hidden=true;
+     etat.innerHTML='<b>Aucun signal connu.</b>';
+     rendreVide(true);
+   }else{
+     const lois=[...new Set(vus.map(v=>v.loi))];
+     etat.innerHTML='<b>'+vus.length+' signal'+(vus.length>1?'x':'')+'</b> relevé'+(vus.length>1?'s':'')+', '+lois.length+' loi'+(lois.length>1?'s':'')+' concernée'+(lois.length>1?'s':'')+'.';
+     rendreLectures(lois);
+   }
+   go.textContent='Relire';go.disabled=false;
+ },pas*(vus.length+1)+(reduit?0:250));
+};
+
+function rendreVide(inconnu){
+ sortie.hidden=false;
+ sortie.innerHTML='<div class="vide"><h3>Aucune loi ne couvre ce cas</h3>'+
+  '<p>Le Code ne propose rien plutôt que de proposer à peu près.</p>'+
+  '<p>Ce cas part dans les questions en attente. Il te sera présenté en fin de séance, déjà formulé, et c\'est toi qui trancheras.</p></div>';
+}
+
+function rendreLectures(lois){
+ sortie.hidden=false;
+ const deux=lois.slice(0,2);
+ let h='<h2>'+(deux.length>1?'Deux lectures possibles':'Une lecture')+'</h2>';
+ h+='<div class="lectures">'+deux.map((li,k)=>{
+   const L=LECTURES[li],loi=LOIS[li];
+   return '<div class="lecture"><div class="rang">'+(k===0?'Lecture la plus proche':'Lecture concurrente')+'</div>'+
+    '<h3>'+L.titre+'</h3><p>'+L.para+'</p>'+
+    '<button class="lienloi" data-loi="'+li+'"><b>'+loi.ref+'</b><em>'+loi.enonce+'</em></button>'+
+    '<p><b>Conduite à tenir.</b> '+L.conduite+'</p></div>';
+ }).join('')+'</div>';
+ if(deux.length>1){
+   const p=PAIRES[deux[0]+'-'+deux[1]];
+   if(p)h+='<hr class="sep"><p class="paire"><b>Ce qui les rapproche.</b> '+p.r+'</p>'+
+           '<p class="paire"><b>Ce qui les éloigne.</b> '+p.e+'</p>';
+ }
+ sortie.innerHTML=h;
+ sortie.querySelectorAll('.lienloi').forEach(b=>b.onclick=()=>{
+   ouvrir('doctrine');afficherLoi(+b.dataset.loi);
+ });
+}
+
+/* doctrine */
+const index=document.getElementById('index'),article=document.getElementById('article');
+LOIS.forEach((l,i)=>{const b=document.createElement('button');
+ b.innerHTML='<span class="ref">'+l.ref+'</span><span class="tt">'+l.enonce+'</span>';
+ b.setAttribute('aria-current',i===0?'true':'false');
+ b.onclick=()=>afficherLoi(i);index.appendChild(b);});
+function afficherLoi(i){
+ const l=LOIS[i];
+ [...index.children].forEach((b,j)=>b.setAttribute('aria-current',j===i?'true':'false'));
+ article.innerHTML='<div class="article"><div class="ref">'+l.ref+'</div>'+
+  '<p class="enonce">'+l.enonce+'</p>'+
+  '<div class="badges"><span class="badge '+(l.statut==='éprouvée'?'epr':'cand')+'">'+l.statut+'</span>'+
+  '<span class="badge">'+(l.statut==='éprouvée'?'se réutilise':'à confirmer')+'</span></div><dl>'+
+  '<dt>Pourquoi c\'est vrai</dt><dd>'+l.mecanisme+'</dd>'+
+  '<dt>Ce qu\'on observe</dt><dd><ul>'+l.signaux.map(s=>'<li>'+s+'</li>').join('')+'</ul></dd>'+
+  '<dt>Ce qu\'elle commande</dt><dd class="serif">'+l.procede+'</dd>'+
+  '<dt>À ne pas confondre</dt><dd>'+l.concurrentes+'</dd>'+
+  '<dt>D\'où elle vient</dt><dd>'+l.origine+'</dd>'+
+  '<dt>Solidité</dt><dd>'+l.solidite+'</dd>'+
+  '<dt>Statut</dt><dd>'+l.statutTexte+'</dd></dl>'+
+  '<p class="mien">Sept champs viennent de ta note. La solidité est le huitième, celui que j\'ajoute : sans lui, une loi d\'un seul dossier et une loi éprouvée dix fois se ressemblent.</p></div>';
+}
+afficherLoi(0);
+
+/* trancher */
+const verdicts=document.getElementById('verdicts'),resultat=document.getElementById('resultat');
+VERDICTS.forEach((v,i)=>{const b=document.createElement('button');b.className=v.cls;
+ b.innerHTML=v.t+'<small>'+v.s+'</small>';b.setAttribute('aria-pressed','false');
+ b.onclick=()=>{[...verdicts.children].forEach((x,j)=>x.setAttribute('aria-pressed',j===i?'true':'false'));
+ resultat.innerHTML=v.r;};verdicts.appendChild(b);});
+
+/* onglets */
+const onglets=[...document.querySelectorAll('nav button')];
+function ouvrir(id){
+ onglets.forEach(x=>x.setAttribute('aria-selected',x.dataset.onglet===id?'true':'false'));
+ ['lire','doctrine','trancher'].forEach(s=>document.getElementById(s).hidden=(s!==id));
+ window.scrollTo(0,0);
+}
+onglets.forEach(b=>b.onclick=()=>ouvrir(b.dataset.onglet));
+</script>
+</body>
+</html>
